@@ -1,9 +1,7 @@
 {
   "pergunta1": "É correto afirmar que a definição de variáveis em PHP é feita inserindo o caractere $ no início do nome da variável",
   "resposta_correta": "verdadeiro"
-},
 
-{
   "pergunta2": "As tuplas, embora sejam semelhantes às listas, estão limitadas a, no máximo, cinco níveis.",
-  "resposta_correta": "verdadeiro"
+  "resposta_correta2": "verdadeiro"
 }
