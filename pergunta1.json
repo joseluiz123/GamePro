@@ -9,5 +9,6 @@
   B O programa imprime: Sua média foi {}.
   C O programa imprime: Sua média foi Null.
   D O programa apresenta um erro na impressão porque tenta converter tipo numérico em caractere.
-  E O programa apresenta um erro na impressão, pois não apresenta o formato do valor."
+  E O programa apresenta um erro na impressão, pois não apresenta o formato do valor.",
+  "resposta_correta3": "A"
 }
