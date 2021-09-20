@@ -7,6 +7,7 @@ pygame.init()
 
 pygame.mixer.music.set_volume(0.8)
 musica_de_fundo = pygame.mixer.music.load('audio/10-Overworld-Bgm.mp3') # Site com os sons https://downloads.khinsider.com/game-soundtracks/album/super-mario-world-original-soundtrack
+#pulo_personagem = pygame.mixer.music.load('audio/pulo_yoshi.mp3')
 pygame.mixer.music.play(-1)
 
 request = requests.get('https://raw.githubusercontent.com/joseluiz123/GamePro/main/pergunta1.json')
@@ -39,6 +40,8 @@ pygame.display.set_caption('Sprites')
 class Personagem(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.som_pulo = pygame.mixer.Sound('audio/pulo_yoshi.mp3')
+        self.som_pulo.set_volume(1)
         self.sprites = []
         self.sprites.append(pygame.image.load('yoshi/sprite_0.png')) #homem_terno/homem_terno0.png
         self.sprites.append(pygame.image.load('yoshi/sprite_1.png'))
@@ -54,6 +57,7 @@ class Personagem(pygame.sprite.Sprite):
 
     def pular(self):
         self.pulo = True
+        self.som_pulo.play()
 
     def update(self):
         if self.pulo == True:
@@ -97,7 +101,7 @@ while True:
             exit()
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
-                
+
                 if personagem.rect.y != personagem.pos_y_inicial:
                     pass
                 else:
