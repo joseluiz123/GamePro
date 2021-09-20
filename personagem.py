@@ -5,6 +5,10 @@ import requests
 
 pygame.init()
 
+pygame.mixer.music.set_volume(0.8)
+musica_de_fundo = pygame.mixer.music.load('audio/10-Overworld-Bgm.mp3') # Site com os sons https://downloads.khinsider.com/game-soundtracks/album/super-mario-world-original-soundtrack
+pygame.mixer.music.play(-1)
+
 request = requests.get('https://raw.githubusercontent.com/joseluiz123/GamePro/main/pergunta1.json')
 address_data = request.json()
 
@@ -17,11 +21,6 @@ if len(pergunta) > 20:
     for x in range(2):
         print(pergunta[x])
 
-#print(pergunta.split(' ', 10))
-
-
-#texto = game_font.render('red',True,'Black')
-#texto_rect = texto.get_rect(center = (25,10))
 texto = f'Pergunta 1: {pergunta[0]}'
 texto_formatado = game_font.render(texto, True, (0, 0, 0))
 
@@ -37,8 +36,6 @@ PRETO = (0, 0, 0)
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Sprites')
 
-#container = pygame.display.set_mode(720, 200)
-
 class Personagem(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -51,9 +48,25 @@ class Personagem(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7)) #(32 * 7, 32 * 7)
 
         self.rect = self.image.get_rect()
-        self.rect.topleft = 300, 380 #255
+        self.pos_y_inicial = 368
+        self.rect.topleft = 300, 368  #255 posição x e y do personagem
+        self.pulo = False
+
+    def pular(self):
+        self.pulo = True
 
     def update(self):
+        if self.pulo == True:
+            if self.rect.y <= 290:
+                self.pulo = False
+
+            self.rect.y -= 20
+        else:
+            if self.rect.y < self.pos_y_inicial:
+                self.rect.y += 10
+            else:
+                self.rect.y = self.pos_y_inicial
+
         self.atual = self.atual + 0.5
         if self.atual >= len(self.sprites):
             self.atual = 0
@@ -69,6 +82,9 @@ pygame.draw.rect(tela, (0,255,0), (10, 5, 100, 20))
 imagem_fundo = pygame.image.load('cidade_fundo.jpg').convert()
 imagem_fundo = pygame.transform.scale(imagem_fundo, (largura, altura))
 
+#nuvem = pygame.image.load('nuvem.png').convert()
+#nuvem = pygame.transform.scale(nuvem, (700, 300))
+
 relogio = pygame.time.Clock()
 
 while True:
@@ -79,10 +95,18 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             exit()
+        if event.type == KEYDOWN:
+            if event.key == K_SPACE:
+                
+                if personagem.rect.y != personagem.pos_y_inicial:
+                    pass
+                else:
+                    personagem.pular()
 
     pygame.draw.rect(imagem_fundo, (255,245,245), (25,10,700,210))
 
     tela.blit(imagem_fundo, (0, 0))
+ #   tela.blit(nuvem, (10, -30))
 
     tela.blit(texto_formatado, (30,15)) #exibe a pergunta
     tela.blit(texto_formatado2, (30,50)) #exibe a pergunta
@@ -153,5 +177,15 @@ while True:
     todas_as_sprites.update()
     pygame.display.flip()
 
+
+
+{
+  "pergunta1": "É correto afirmar que a definição de variáveis em PHP * é feita inserindo o caractere $ no início do nome da variável",
+  "resposta_correta1": "verdadeiro",
+  "pergunta2": "As tuplas, embora sejam semelhantes às listas, estão limitadas a, no máximo, cinco níveis.",
+  "resposta_correta2": "falso",
+  "pergunta3": "Um desenvolvedor implementou um programa para exibir a média de um dado retirado de uma grande base de dados. \n Para isso, foi utilizada a linguagem Python. O trecho do código que mostra o resultado é apresentado a seguir.\n Assinale a alternativa correta acerca desse trecho de código sabendo que a média do usuário foi 75.\n print('Sua média foi {}.'.format(med)) \n (A) O programa imprime: Sua média foi 75. \n (B) O programa imprime: Sua média foi {}. \n (C) O programa imprime: Sua média foi Null. \n (D) O programa apresenta um erro na impressão porque tenta converter tipo numérico em caractere. \n (E) O programa apresenta um erro na impressão, pois não apresenta o formato do valor.",
+  "resposta_correta3": "A"
+}
 
 '''
