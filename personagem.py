@@ -5,7 +5,7 @@ import requests
 
 pygame.init()
 
-pygame.mixer.music.set_volume(0.8)
+pygame.mixer.music.set_volume(0.2)
 musica_de_fundo = pygame.mixer.music.load('audio/10-Overworld-Bgm.mp3') # Site com os sons https://downloads.khinsider.com/game-soundtracks/album/super-mario-world-original-soundtrack
 #pulo_personagem = pygame.mixer.music.load('audio/pulo_yoshi.mp3')
 pygame.mixer.music.play(-1)
@@ -54,6 +54,14 @@ class Personagem(pygame.sprite.Sprite):
         self.pos_y_inicial = 368
         self.rect.topleft = 300, 368  #255 posição x e y do personagem
         self.pulo = False
+        self.andar_frente = False
+        self.andar_tras = False
+
+    def andar_para_tras(self):
+        self.andar_tras = True
+
+    def andar_para_frente(self):
+        self.andar_frente = True
 
     def pular(self):
         self.pulo = True
@@ -63,13 +71,27 @@ class Personagem(pygame.sprite.Sprite):
         if self.pulo == True:
             if self.rect.y <= 290:
                 self.pulo = False
-
             self.rect.y -= 20
         else:
             if self.rect.y < self.pos_y_inicial:
                 self.rect.y += 10
             else:
                 self.rect.y = self.pos_y_inicial
+
+
+        #andar para trás
+        if self.andar_tras == True:
+            self.rect.x -= 5
+            if self.rect.x < 200:
+                self.andar_tras = False
+        print(self.rect.x)
+
+        # andar para frente
+        if self.andar_frente == True:
+            self.rect.x += 10
+            if self.rect.x > 650:
+                self.andar_frente = False
+        print(self.rect.x)
 
         self.atual = self.atual + 0.5
         if self.atual >= len(self.sprites):
@@ -106,7 +128,10 @@ while True:
                     pass
                 else:
                     personagem.pular()
-
+            if event.key == K_a:
+                personagem.andar_para_tras()
+            if event.key == K_d:
+                personagem.andar_para_frente()
     pygame.draw.rect(imagem_fundo, (255,245,245), (25,10,700,210))
 
     tela.blit(imagem_fundo, (0, 0))
