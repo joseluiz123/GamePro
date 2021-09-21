@@ -5,7 +5,7 @@ import requests
 
 pygame.init()
 
-pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.set_volume(0.1)
 musica_de_fundo = pygame.mixer.music.load('audio/10-Overworld-Bgm.mp3') # Site com os sons https://downloads.khinsider.com/game-soundtracks/album/super-mario-world-original-soundtrack
 #pulo_personagem = pygame.mixer.music.load('audio/pulo_yoshi.mp3')
 pygame.mixer.music.play(-1)
@@ -52,16 +52,20 @@ class Personagem(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.pos_y_inicial = 368
-        self.rect.topleft = 300, 368  #255 posição x e y do personagem
+        self.rect.topleft = 320, 368  #320, 255 posição x e y do personagem
         self.pulo = False
         self.andar_frente = False
         self.andar_tras = False
+        self.volta_meio = False
 
     def andar_para_tras(self):
         self.andar_tras = True
 
     def andar_para_frente(self):
         self.andar_frente = True
+
+    def voltar_ao_meio(self):
+        self.volta_meio = True
 
     def pular(self):
         self.pulo = True
@@ -78,26 +82,34 @@ class Personagem(pygame.sprite.Sprite):
             else:
                 self.rect.y = self.pos_y_inicial
 
-
         #andar para trás
         if self.andar_tras == True:
             self.rect.x -= 5
-            if self.rect.x < 200:
+            if self.rect.x < 100:
                 self.andar_tras = False
         print(self.rect.x)
 
         # andar para frente
         if self.andar_frente == True:
             self.rect.x += 10
-            if self.rect.x > 650:
+            if self.rect.x > 555:
                 self.andar_frente = False
+                personagem.voltar_ao_meio()
         print(self.rect.x)
+
+        #volta ao meio da tela
+        if self.volta_meio == True:
+            personagem.rect.x += 10
+            if personagem.rect.x > 320:
+                self.volta_meio = False
+
 
         self.atual = self.atual + 0.5
         if self.atual >= len(self.sprites):
             self.atual = 0
         self.image = self.sprites[int(self.atual)]
         self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7))
+
 
 todas_as_sprites = pygame.sprite.Group()
 personagem = Personagem()
@@ -132,6 +144,17 @@ while True:
                 personagem.andar_para_tras()
             if event.key == K_d:
                 personagem.andar_para_frente()
+
+            if personagem.rect.x < 100 and event.key == K_s:
+                print("tá atrás e tentou voltar ao meio")
+                #personagem.andar_para_frente()
+                personagem.voltar_ao_meio()
+                '''for i in range(100, 320, 10):
+                    personagem.rect.x += 10
+                    print('Valor de i', i)
+                    print('aqui:', personagem.rect.x)
+                '''
+
     pygame.draw.rect(imagem_fundo, (255,245,245), (25,10,700,210))
 
     tela.blit(imagem_fundo, (0, 0))
