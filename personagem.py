@@ -93,13 +93,15 @@ class Personagem(pygame.sprite.Sprite):
 
         #andar para trás
         if self.andar_tras == True:
-            self.rect.x -= 5
+            self.rect.x -= 10
+            self.andar_tras = False
             if self.rect.x < 100:
                 self.andar_tras = False
 
         # andar para frente
         if self.andar_frente == True:
             self.rect.x += 10
+            self.andar_frente = False
             if self.rect.x > 555:
                 self.andar_frente = False
 
@@ -140,19 +142,30 @@ while True:
     relogio.tick(30)
     tela.fill(PRETO)
 
+    pygame.event.pump()
+    keys = pygame.key.get_pressed()
+
+    if keys[K_a]:
+        personagem.andar_para_tras()
+    if keys[K_d]:
+        personagem.andar_para_frente()
+
+    #for event in pygame.event.get():
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             exit()
         if event.type == KEYDOWN:
+            print(event.type)
             if event.key == K_SPACE:
 
                 if personagem.rect.y != personagem.pos_y_inicial:
                     pass
                 else:
                     personagem.pular()
-            if event.key == K_a:
+            '''if event.key == K_a:
                 personagem.andar_para_tras()
+                print(event.key)
             if event.key == K_d:
                 personagem.andar_para_frente()
 
@@ -162,7 +175,7 @@ while True:
 
             if personagem.rect.x < 100 or personagem.rect.x > 500 and event.key == K_s:
                 print("Voltar ao meio pela direita")
-                personagem.voltar_ao_meio_d()
+                personagem.voltar_ao_meio_d()'''
 
     pygame.draw.rect(imagem_fundo, (255,245,245), (25,10,700,210))
 
