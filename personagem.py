@@ -14,6 +14,7 @@ request = requests.get('https://raw.githubusercontent.com/joseluiz123/GamePro/ma
 address_data = request.json()
 
 pergunta = address_data[f'pergunta1']
+resposta = address_data[f'resposta_correta1']
 #print(f'Pergunta:' + pergunta)
 game_font = pygame.font.Font(None,28)
 
@@ -28,6 +29,9 @@ texto_formatado = game_font.render(texto, True, (0, 0, 0))
 texto2 = f'{pergunta[1]}'
 texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
 #print(len(pergunta)) # exibe a quantidade da string
+
+resposta = f'{resposta}'
+resposta_formatada = game_font.render(resposta, True, (0, 0, 0))
 
 largura = 760
 altura = 480
@@ -57,6 +61,7 @@ class Personagem(pygame.sprite.Sprite):
         self.andar_frente = False
         self.andar_tras = False
         self.volta_meio = False
+        self.volta_meio_d = False
 
     def andar_para_tras(self):
         self.andar_tras = True
@@ -67,11 +72,15 @@ class Personagem(pygame.sprite.Sprite):
     def voltar_ao_meio(self):
         self.volta_meio = True
 
+    def voltar_ao_meio_d(self):
+        self.volta_meio_d = True
+
     def pular(self):
         self.pulo = True
         self.som_pulo.play()
 
     def update(self):
+        #personagem.rect.x = 320
         if self.pulo == True:
             if self.rect.y <= 290:
                 self.pulo = False
@@ -87,22 +96,24 @@ class Personagem(pygame.sprite.Sprite):
             self.rect.x -= 5
             if self.rect.x < 100:
                 self.andar_tras = False
-        print(self.rect.x)
 
         # andar para frente
         if self.andar_frente == True:
             self.rect.x += 10
             if self.rect.x > 555:
                 self.andar_frente = False
-                personagem.voltar_ao_meio()
-        print(self.rect.x)
 
         #volta ao meio da tela
         if self.volta_meio == True:
             personagem.rect.x += 10
             if personagem.rect.x > 320:
-                self.volta_meio = False
+                self.volta_meio = False #até aqui é o movimento da esquerda para o meio
 
+        if self.volta_meio_d == True: #and personagem.rect.x > 400:
+            personagem.rect.x -= 5
+            #print(personagem.rect.x)
+        if personagem.rect.x < 325:
+            self.volta_meio_d = False
 
         self.atual = self.atual + 0.5
         if self.atual >= len(self.sprites):
@@ -145,23 +156,22 @@ while True:
             if event.key == K_d:
                 personagem.andar_para_frente()
 
-            if personagem.rect.x < 100 and event.key == K_s:
+            if personagem.rect.x < 100 or personagem.rect.x > 500 and event.key == K_s:
                 print("tá atrás e tentou voltar ao meio")
-                #personagem.andar_para_frente()
                 personagem.voltar_ao_meio()
-                '''for i in range(100, 320, 10):
-                    personagem.rect.x += 10
-                    print('Valor de i', i)
-                    print('aqui:', personagem.rect.x)
-                '''
+
+            if personagem.rect.x < 100 or personagem.rect.x > 500 and event.key == K_s:
+                print("Voltar ao meio pela direita")
+                personagem.voltar_ao_meio_d()
 
     pygame.draw.rect(imagem_fundo, (255,245,245), (25,10,700,210))
 
     tela.blit(imagem_fundo, (0, 0))
- #   tela.blit(nuvem, (10, -30))
+    #tela.blit(nuvem, (10, -30))
 
     tela.blit(texto_formatado, (30,15)) #exibe a pergunta
     tela.blit(texto_formatado2, (30,50)) #exibe a pergunta
+    tela.blit(resposta_formatada, (320, 270))  #exibe a resposta
 
     todas_as_sprites.draw(tela)
     todas_as_sprites.update()
