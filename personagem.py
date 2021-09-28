@@ -6,8 +6,8 @@ import requests
 pygame.init()
 
 pygame.mixer.music.set_volume(0.1)
-musica_de_fundo = pygame.mixer.music.load('audio/10-Overworld-Bgm.mp3') # Site com os sons https://downloads.khinsider.com/game-soundtracks/album/super-mario-world-original-soundtrack
-#pulo_personagem = pygame.mixer.music.load('audio/pulo_yoshi.mp3')
+musica_de_fundo = pygame.mixer.music.load(
+    'audio/10-Overworld-Bgm.mp3')  # Site com os sons https://downloads.khinsider.com/game-soundtracks/album/super-mario-world-original-soundtrack
 pygame.mixer.music.play(-1)
 
 request = requests.get('https://raw.githubusercontent.com/joseluiz123/GamePro/main/pergunta1.json')
@@ -15,8 +15,8 @@ address_data = request.json()
 
 pergunta = address_data[f'pergunta1']
 resposta = address_data[f'resposta_correta1']
-#print(f'Pergunta:' + pergunta)
-game_font = pygame.font.Font(None,28)
+# print(f'Pergunta:' + pergunta)
+game_font = pygame.font.Font(None, 28)
 
 if len(pergunta) > 20:
     pergunta = pergunta.split('*', 2)
@@ -28,7 +28,7 @@ texto_formatado = game_font.render(texto, True, (0, 0, 0))
 
 texto2 = f'{pergunta[1]}'
 texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
-#print(len(pergunta)) # exibe a quantidade da string
+# print(len(pergunta)) # exibe a quantidade da string
 
 resposta = f'{resposta}'
 resposta_formatada = game_font.render(resposta, True, (0, 0, 0))
@@ -41,22 +41,26 @@ PRETO = (0, 0, 0)
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Sprites')
 
+
 class Personagem(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.som_pulo = pygame.mixer.Sound('audio/pulo_yoshi.mp3')
         self.som_pulo.set_volume(1)
         self.sprites = []
-        self.sprites.append(pygame.image.load('yoshi/sprite_0.png')) #homem_terno/homem_terno0.png
-        self.sprites.append(pygame.image.load('yoshi/sprite_1.png'))
-        self.sprites.append(pygame.image.load('yoshi/sprite_3.png'))
+        self.sprites.append(pygame.image.load('imagens/sprite_0.png'))
+        self.sprites.append(pygame.image.load('imagens/sprite_1.png'))
+        self.sprites.append(pygame.image.load('imagens/sprite_2.png'))
+        '''self.sprites.append(pygame.image.load('imagens/sprite_3.png'))
+        self.sprites.append(pygame.image.load('imagens/sprite_4.png'))
+        self.sprites.append(pygame.image.load('imagens/sprite_5.png'))'''
         self.atual = 0
         self.image = self.sprites[self.atual]
-        self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7)) #(32 * 7, 32 * 7)
+        self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7))  # (32 * 7, 32 * 7)
 
         self.rect = self.image.get_rect()
         self.pos_y_inicial = 368
-        self.rect.topleft = 320, 368  #320, 255 posição x e y do personagem
+        self.rect.topleft = 320, 368  # 320, 255 posição x e y do personagem
         self.pulo = False
         self.andar_frente = False
         self.andar_tras = False
@@ -80,7 +84,7 @@ class Personagem(pygame.sprite.Sprite):
         self.som_pulo.play()
 
     def update(self):
-        #personagem.rect.x = 320
+        # personagem.rect.x = 320
         if self.pulo == True:
             if self.rect.y <= 290:
                 self.pulo = False
@@ -91,31 +95,60 @@ class Personagem(pygame.sprite.Sprite):
             else:
                 self.rect.y = self.pos_y_inicial
 
-        #andar para trás
+        # andar para trás
         if self.andar_tras == True:
-            self.rect.x -= 10
-            self.andar_tras = False
-            if self.rect.x < 100:
+            if self.rect.x < 10:
                 self.andar_tras = False
+            if self.andar_tras == True:
+                self.rect.x -= 10
 
         # andar para frente
         if self.andar_frente == True:
-            self.rect.x += 10
             self.andar_frente = False
-            if self.rect.x > 555:
+            if self.rect.x > 595:
                 self.andar_frente = False
+            else:
+                self.rect.x += 10
 
-        #volta ao meio da tela
-        if self.volta_meio == True:
-            personagem.rect.x += 10
-            if personagem.rect.x > 320:
-                self.volta_meio = False #até aqui é o movimento da esquerda para o meio
+        # não tava comentado self.atual = self.atual + 0.5
 
-        if self.volta_meio_d == True: #and personagem.rect.x > 400:
-            personagem.rect.x -= 5
-            #print(personagem.rect.x)
-        if personagem.rect.x < 325:
-            self.volta_meio_d = False
+        ### tentativa de alterar a sprite qudno estiver andando para trás ###
+        '''if self.andar_tras == True:
+            self.atual = 3
+        if self.andar_frente == True:
+            self.atual = 1
+        else:
+            self.atual = self.atual + 0.5'''
+        #####
+
+        ''' isso aqui funciona, mas o personagem não altera a sprite qnd vai para trás
+        self.atual = self.atual + 0.5
+
+        if self.atual >= len(self.sprites):
+            self.atual = 0
+        self.image = self.sprites[int(self.atual)]
+        #print(self.atual)
+        self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7))'''
+
+        '''# altera a sprite para movimentando para trás
+        if self.andar_tras == True:
+            self.atual = self.atual + 0.5
+            if self.atual > 2:
+                self.atual = 0
+            self.image = self.sprites[int(self.atual)]
+            print(self.atual)
+
+            self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7))
+
+        #altera a sprite para movimentando para frente  ==REVISAR==
+        else: # self.andar_frente == True
+            self.atual = self.atual + 0.5
+            print(self.atual)
+            if self.atual <= 10:
+                self.atual = 3
+            self.image = self.sprites[int(self.atual)]
+
+            self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7))'''
 
         self.atual = self.atual + 0.5
         if self.atual >= len(self.sprites):
@@ -123,18 +156,17 @@ class Personagem(pygame.sprite.Sprite):
         self.image = self.sprites[int(self.atual)]
         self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7))
 
-
 todas_as_sprites = pygame.sprite.Group()
 personagem = Personagem()
 todas_as_sprites.add(personagem)
 
-pygame.draw.rect(tela, (0,255,0), (10, 5, 100, 20))
+pygame.draw.rect(tela, (0, 255, 0), (10, 5, 100, 20))
 
-imagem_fundo = pygame.image.load('cidade_fundo.jpg').convert()
+imagem_fundo = pygame.image.load('imagens/cidade_fundo.jpg').convert()
 imagem_fundo = pygame.transform.scale(imagem_fundo, (largura, altura))
 
-#nuvem = pygame.image.load('nuvem.png').convert()
-#nuvem = pygame.transform.scale(nuvem, (700, 300))
+# nuvem = pygame.image.load('nuvem.png').convert()
+# nuvem = pygame.transform.scale(nuvem, (700, 300))
 
 relogio = pygame.time.Clock()
 
@@ -145,52 +177,37 @@ while True:
     pygame.event.pump()
     keys = pygame.key.get_pressed()
 
-    if keys[K_a]:
+    if keys[K_a] or keys[K_LEFT]:
         personagem.andar_para_tras()
-    if keys[K_d]:
+    else:
+        personagem.andar_tras = False
+
+    if keys[K_d] or keys[K_RIGHT]:
         personagem.andar_para_frente()
 
-    #for event in pygame.event.get():
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             exit()
         if event.type == KEYDOWN:
-            print(event.type)
-            if event.key == K_SPACE:
-
+            if event.key == K_SPACE or event.key == K_UP:
                 if personagem.rect.y != personagem.pos_y_inicial:
                     pass
                 else:
                     personagem.pular()
-            '''if event.key == K_a:
-                personagem.andar_para_tras()
-                print(event.key)
-            if event.key == K_d:
-                personagem.andar_para_frente()
 
-            if personagem.rect.x < 100 or personagem.rect.x > 500 and event.key == K_s:
-                print("tá atrás e tentou voltar ao meio")
-                personagem.voltar_ao_meio()
-
-            if personagem.rect.x < 100 or personagem.rect.x > 500 and event.key == K_s:
-                print("Voltar ao meio pela direita")
-                personagem.voltar_ao_meio_d()'''
-
-    pygame.draw.rect(imagem_fundo, (255,245,245), (25,10,700,210))
+    pygame.draw.rect(imagem_fundo, (255, 245, 245), (25, 10, 700, 210))
 
     tela.blit(imagem_fundo, (0, 0))
-    #tela.blit(nuvem, (10, -30))
+    # tela.blit(nuvem, (10, -30))
 
-    tela.blit(texto_formatado, (30,15)) #exibe a pergunta
-    tela.blit(texto_formatado2, (30,50)) #exibe a pergunta
-    tela.blit(resposta_formatada, (320, 270))  #exibe a resposta
+    tela.blit(texto_formatado, (30, 15))  # exibe a pergunta
+    tela.blit(texto_formatado2, (30, 50))  # exibe a pergunta
+    tela.blit(resposta_formatada, (320, 270))  # exibe a resposta
 
     todas_as_sprites.draw(tela)
     todas_as_sprites.update()
     pygame.display.flip()
-
-
 
 ''' FUNCIONANDO
 import pygame
