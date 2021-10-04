@@ -3,7 +3,7 @@
   "resposta_correta1": "verdadeiro",
   "resposta_errada1": "falso",
   "resposta_errada2": "",
-  "pergunta2": "As tuplas, embora sejam semelhantes às listas, estão limitadas a,* no máximo, cinco níveis.",
+  "pergunta2": "As tuplas, embora sejam semelhantes às listas, * estão limitadas a, no máximo, cinco níveis.",
   "resposta_correta2": "falso",
   "pergunta3": "Um desenvolvedor implementou um programa para exibir a média de um dado retirado de uma grande base de dados. \n Para isso, foi utilizada a linguagem Python. O trecho do código que mostra o resultado é apresentado a seguir.\n Assinale a alternativa correta acerca desse trecho de código sabendo que a média do usuário foi 75.\n print('Sua média foi {}.'.format(med)) \n (A) O programa imprime: Sua média foi 75. \n (B) O programa imprime: Sua média foi {}. \n (C) O programa imprime: Sua média foi Null. \n (D) O programa apresenta um erro na impressão porque tenta converter tipo numérico em caractere. \n (E) O programa apresenta um erro na impressão, pois não apresenta o formato do valor.",
   "resposta_correta3": "A"
