@@ -16,55 +16,17 @@ address_data = request.json()
 
 pontos = 0
 n_pergunta = 1
-''' 
-pergunta = address_data[f'pergunta{n_pergunta}']
-resposta = address_data[f'resposta_correta1_{n_pergunta}']
-resposta_errada1 = address_data[f'resposta_errada1_{n_pergunta}']
-resposta_errada2 = address_data[f'resposta_errada2_{n_pergunta}']
 
-game_font = pygame.font.SysFont('arial', 25, False, False)
-
-pergunta = pergunta.split('*', 2)
-for x in range(2):
-    print(pergunta[x])
-
-print(pergunta)
-texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
-texto_formatado = game_font.render(texto, True, (0, 0, 0))
-
-texto2 = f'{pergunta[1]}'
-texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
-# print(len(pergunta)) # exibe a quantidade da string
-
-resposta = f'{resposta}'
-resposta_formatada = game_font.render(resposta, True, (0, 0, 0))
-
-resposta_errada1 = f'{resposta_errada1}'
-resp_errada1_formatada = game_font.render(resposta_errada1, True, (0, 0, 0))
-
-resposta_errada2 = f'{resposta_errada2}'
-resp_errada2_formatada = game_font.render(resposta_errada2, True, (0, 0, 0))
-'''
 largura = 760
 altura = 480
 
 pos_resp_correta = [80, 320, 600]
 pos_resp_correta = random.choice(pos_resp_correta) #implementação de posição aleatória da resposta
 
-if pos_resp_correta == 80:
-    pos_resp_errada = 320
-    pos_resp_errada_2 = 600
-
-elif pos_resp_correta == 320:
-    pos_resp_errada = 80
-    pos_resp_errada_2 = 600
-
-
 preto = (0, 0, 0)
 
 tela = pygame.display.set_mode((largura, altura))
-pygame.display.set_caption('sprites')
-
+pygame.display.set_caption('Perguntas e respostas')
 
 class personagem(pygame.sprite.Sprite):
     def __init__(self):
@@ -148,7 +110,6 @@ class personagem(pygame.sprite.Sprite):
         #print(len(self.sprites))
         #print(self.atual)
 
-
         ### tentativa de alterar a sprite qudno estiver andando para trás ###
         '''if self.andar_tras == True:
             self.atual = 3
@@ -208,7 +169,6 @@ class resposta_correta(pygame.sprite.Sprite):
     def update(self):
         print('atualizou')
 
-
 class resposta_errada(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -220,6 +180,7 @@ class resposta_errada(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.topleft = 25, 242 #300, 265
+        #self.ve
 
     def update(self):
         print('atualizou a resposta errada')
@@ -275,10 +236,6 @@ while True:
 
     pygame.draw.rect(imagem_fundo, (255, 245, 245), (25, 10, 700, 210))
 
-
-
-
-
     pergunta = address_data[f'pergunta{n_pergunta}']
     resposta = address_data[f'resposta_correta1_{n_pergunta}']
     resposta_errada1 = address_data[f'resposta_errada1_{n_pergunta}']
@@ -287,8 +244,6 @@ while True:
     game_font = pygame.font.SysFont('arial', 25, False, False)
 
     pergunta = pergunta.split('*', 2)
-    #for x in range(2):
-        #print(pergunta[x])
 
     #print(pergunta)
     texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
@@ -313,12 +268,16 @@ while True:
         grupo_resp_correta.update()  # não existia
         pontos += 1
         n_pergunta += 1
-        pass
         print('N° Pergunta', n_pergunta)
         print(pontos)
+        pos_resp_correta = [80, 320, 600]
+        pos_resp_correta = random.choice(pos_resp_correta)  # implementação de posição aleatória da resposta
+
+    elif personagem.colidiu == True:
+        pos_resp_correta = [80, 320, 600]
+        pos_resp_correta = random.choice(pos_resp_correta)  # implementação de posição aleatória da resposta
 
     tela.blit(imagem_fundo, (0, 0))
-    # tela.blit(nuvem, (10, -30))
 
     texto_pontos = f'Pontos: {pontos}'
     texto_pontos = game_font.render(texto_pontos, True, (0, 0, 0))
@@ -329,19 +288,26 @@ while True:
     tela.blit(texto_formatado, (30, 15))  # exibe a pergunta
     tela.blit(texto_formatado2, (30, 50))  # exibe a pergunta
 
-
-
     print(pos_resp_correta)
     tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
     #tela.blit(resposta_formatada, (320, 245))  # exibe a resposta
 
+    if pos_resp_correta == 80:
+        pos_resp_errada = 320
+        pos_resp_errada_2 = 600
 
+    elif pos_resp_correta == 320:
+        pos_resp_errada = 80
+        pos_resp_errada_2 = 600
+    else:
+        pos_resp_errada = 80
+        pos_resp_errada_2 = 320
 
-    tela.blit(resp_errada1_formatada, (80, 245))  # exibe a resposta errada 1
-    tela.blit(resp_errada2_formatada, (600, 245))  # exibe a resposta errada 2
+    tela.blit(resp_errada1_formatada, (pos_resp_errada, 245))  # exibe a resposta errada 1
+    tela.blit(resp_errada2_formatada, (pos_resp_errada_2, 245))  # exibe a resposta errada 2
 
-
-
+    '''tela.blit(resp_errada1_formatada, (80, 245))  # exibe a resposta errada 1
+    tela.blit(resp_errada2_formatada, (600, 245))  # exibe a resposta errada 2'''
 
     tela.blit(texto_pontos, (600, 150))  # exibe os pontos
 
