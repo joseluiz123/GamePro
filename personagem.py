@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from sys import exit
 import requests
+import random
 
 pygame.init()
 
@@ -13,9 +14,9 @@ pygame.mixer.music.play(-1)
 request = requests.get('https://raw.githubusercontent.com/joseluiz123/gamepro/main/pergunta1.json')
 address_data = request.json()
 
-n_pergunta = 1
 pontos = 0
-
+n_pergunta = 1
+''' 
 pergunta = address_data[f'pergunta{n_pergunta}']
 resposta = address_data[f'resposta_correta1_{n_pergunta}']
 resposta_errada1 = address_data[f'resposta_errada1_{n_pergunta}']
@@ -43,9 +44,21 @@ resp_errada1_formatada = game_font.render(resposta_errada1, True, (0, 0, 0))
 
 resposta_errada2 = f'{resposta_errada2}'
 resp_errada2_formatada = game_font.render(resposta_errada2, True, (0, 0, 0))
-
+'''
 largura = 760
 altura = 480
+
+pos_resp_correta = [80, 320, 600]
+pos_resp_correta = random.choice(pos_resp_correta) #implementação de posição aleatória da resposta
+
+if pos_resp_correta == 80:
+    pos_resp_errada = 320
+    pos_resp_errada_2 = 600
+
+elif pos_resp_correta == 320:
+    pos_resp_errada = 80
+    pos_resp_errada_2 = 600
+
 
 preto = (0, 0, 0)
 
@@ -262,6 +275,38 @@ while True:
 
     pygame.draw.rect(imagem_fundo, (255, 245, 245), (25, 10, 700, 210))
 
+
+
+
+
+    pergunta = address_data[f'pergunta{n_pergunta}']
+    resposta = address_data[f'resposta_correta1_{n_pergunta}']
+    resposta_errada1 = address_data[f'resposta_errada1_{n_pergunta}']
+    resposta_errada2 = address_data[f'resposta_errada2_{n_pergunta}']
+
+    game_font = pygame.font.SysFont('arial', 25, False, False)
+
+    pergunta = pergunta.split('*', 2)
+    #for x in range(2):
+        #print(pergunta[x])
+
+    #print(pergunta)
+    texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
+    texto_formatado = game_font.render(texto, True, (0, 0, 0))
+
+    texto2 = f'{pergunta[1]}'
+    texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
+    # print(len(pergunta)) # exibe a quantidade da string
+
+    resposta = f'{resposta}'
+    resposta_formatada = game_font.render(resposta, True, (0, 0, 0))
+
+    resposta_errada1 = f'{resposta_errada1}'
+    resp_errada1_formatada = game_font.render(resposta_errada1, True, (0, 0, 0))
+
+    resposta_errada2 = f'{resposta_errada2}'
+    resp_errada2_formatada = game_font.render(resposta_errada2, True, (0, 0, 0))
+
     #verifica se o personagem colidiu na resposta
     colisao = pygame.sprite.spritecollide(personagem, grupo_resp_correta, False)
     if colisao:
@@ -283,9 +328,20 @@ while True:
 
     tela.blit(texto_formatado, (30, 15))  # exibe a pergunta
     tela.blit(texto_formatado2, (30, 50))  # exibe a pergunta
-    tela.blit(resposta_formatada, (320, 245))  # exibe a resposta
+
+
+
+    print(pos_resp_correta)
+    tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
+    #tela.blit(resposta_formatada, (320, 245))  # exibe a resposta
+
+
+
     tela.blit(resp_errada1_formatada, (80, 245))  # exibe a resposta errada 1
-    tela.blit(resp_errada2_formatada, (600, 260))  # exibe a resposta errada 2
+    tela.blit(resp_errada2_formatada, (600, 245))  # exibe a resposta errada 2
+
+
+
 
     tela.blit(texto_pontos, (600, 150))  # exibe os pontos
 
