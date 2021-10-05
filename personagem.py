@@ -13,21 +13,22 @@ pygame.mixer.music.play(-1)
 request = requests.get('https://raw.githubusercontent.com/joseluiz123/gamepro/main/pergunta1.json')
 address_data = request.json()
 
+n_pergunta = 1
 pontos = 0
 
-pergunta = address_data[f'pergunta1']
-resposta = address_data[f'resposta_correta1']
-resposta_errada1 = address_data[f'resposta_errada1']
-resposta_errada2 = address_data[f'resposta_errada2']
+pergunta = address_data[f'pergunta{n_pergunta}']
+resposta = address_data[f'resposta_correta1_{n_pergunta}']
+resposta_errada1 = address_data[f'resposta_errada1_{n_pergunta}']
+resposta_errada2 = address_data[f'resposta_errada2_{n_pergunta}']
 
-# print(f'Pergunta:' + pergunta)
 game_font = pygame.font.SysFont('arial', 25, False, False)
 
 pergunta = pergunta.split('*', 2)
 for x in range(2):
     print(pergunta[x])
 
-texto = f'pergunta 1: {pergunta[0]}'
+print(pergunta)
+texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
 texto_formatado = game_font.render(texto, True, (0, 0, 0))
 
 texto2 = f'{pergunta[1]}'
@@ -185,23 +186,40 @@ class resposta_correta(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.sprites = []
         self.sprites.append(pygame.image.load('imagens/resposta_correta.png'))
-        '''self.sprites.append(pygame.image.load('imagens/sprite_1.png'))
-        self.sprites.append(pygame.image.load('imagens/sprite_0.png'))'''
         self.atual = 0
         self.image = self.sprites[self.atual]
         self.image = pygame.transform.scale(self.image, (150, 35))  # (32 * 7, 32 * 7)
-
         self.rect = self.image.get_rect()
         self.rect.topleft = 300, 242 #300, 265
 
     def update(self):
         print('atualizou')
 
+
+class resposta_errada(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.sprites = []
+        self.sprites.append(pygame.image.load('imagens/resposta_correta.png'))
+        self.atual = 0
+        self.image = self.sprites[self.atual]
+        self.image = pygame.transform.scale(self.image, (150, 35))  # (32 * 7, 32 * 7)
+
+        self.rect = self.image.get_rect()
+        self.rect.topleft = 25, 242 #300, 265
+
+    def update(self):
+        print('atualizou a resposta errada')
+
 todas_as_sprites = pygame.sprite.Group()
 
-resposta_correta = resposta_correta() #não existia
-grupo_resp_correta = pygame.sprite.Group() #não existia
-grupo_resp_correta.add(resposta_correta) #não existia
+resposta_correta = resposta_correta()
+grupo_resp_correta = pygame.sprite.Group()
+grupo_resp_correta.add(resposta_correta)
+
+resposta_errada = resposta_errada() #não existia
+grupo_resp_errada = pygame.sprite.Group() #não existia
+grupo_resp_errada.add(resposta_errada) #não existia
 
 personagem = personagem()
 todas_as_sprites.add(personagem)
@@ -249,25 +267,27 @@ while True:
     if colisao:
         grupo_resp_correta.update()  # não existia
         pontos += 1
+        n_pergunta += 1
         pass
-        print('colidiu')
+        print('N° Pergunta', n_pergunta)
         print(pontos)
 
     tela.blit(imagem_fundo, (0, 0))
     # tela.blit(nuvem, (10, -30))
 
-    grupo_resp_correta.draw(tela)  # não existia
+    texto_pontos = f'Pontos: {pontos}'
+    texto_pontos = game_font.render(texto_pontos, True, (0, 0, 0))
+
+    grupo_resp_correta.draw(tela) #exibe na tela o retângulo da resposta
+    grupo_resp_errada.draw(tela)
 
     tela.blit(texto_formatado, (30, 15))  # exibe a pergunta
     tela.blit(texto_formatado2, (30, 50))  # exibe a pergunta
     tela.blit(resposta_formatada, (320, 245))  # exibe a resposta
-    tela.blit(resp_errada1_formatada, (80, 250))  # exibe a resposta errada 1
+    tela.blit(resp_errada1_formatada, (80, 245))  # exibe a resposta errada 1
     tela.blit(resp_errada2_formatada, (600, 260))  # exibe a resposta errada 2
 
-    '''if personagem.image.spritecollideany(resposta_formatada):
-        print('colidiu na resposta')'''
-
-
+    tela.blit(texto_pontos, (600, 150))  # exibe os pontos
 
     todas_as_sprites.draw(tela)
     todas_as_sprites.update()
