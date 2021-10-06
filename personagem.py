@@ -282,14 +282,14 @@ while True:
     texto_pontos = f'Pontos: {pontos}'
     texto_pontos = game_font.render(texto_pontos, True, (0, 0, 0))
 
-    grupo_resp_correta.draw(tela) #exibe na tela o retângulo da resposta
-    grupo_resp_errada.draw(tela)
+    #grupo_resp_correta.draw(tela) #exibe na tela o retângulo da resposta
+    #grupo_resp_errada.draw(tela)
 
     tela.blit(texto_formatado, (30, 15))  # exibe a pergunta
     tela.blit(texto_formatado2, (30, 50))  # exibe a pergunta
 
     print(pos_resp_correta)
-    tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
+    #tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
     #tela.blit(resposta_formatada, (320, 245))  # exibe a resposta
 
     if pos_resp_correta == 80:
@@ -303,6 +303,10 @@ while True:
         pos_resp_errada = 80
         pos_resp_errada_2 = 320
 
+    grupo_resp_correta.draw(tela)  # exibe na tela o retângulo da resposta
+    grupo_resp_errada.draw(tela)
+
+    tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
     tela.blit(resp_errada1_formatada, (pos_resp_errada, 245))  # exibe a resposta errada 1
     tela.blit(resp_errada2_formatada, (pos_resp_errada_2, 245))  # exibe a resposta errada 2
 
