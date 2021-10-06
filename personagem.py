@@ -179,8 +179,7 @@ class resposta_errada(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (150, 35))  # (32 * 7, 32 * 7)
 
         self.rect = self.image.get_rect()
-        self.rect.topleft = 25, 242 #300, 265
-        #self.ve
+        self.rect.topleft = 25, 242 #25, 242
 
     def update(self):
         print('atualizou a resposta errada')
@@ -243,7 +242,7 @@ while True:
 
     game_font = pygame.font.SysFont('arial', 25, False, False)
 
-    pergunta = pergunta.split('*', 2)
+    pergunta = pergunta.split('*', 3)
 
     #print(pergunta)
     texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
@@ -251,6 +250,10 @@ while True:
 
     texto2 = f'{pergunta[1]}'
     texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
+    # print(len(pergunta)) # exibe a quantidade da string
+
+    texto3 = f'{pergunta[2]}'
+    texto_formatado3 = game_font.render(texto3, True, (0, 0, 0))
     # print(len(pergunta)) # exibe a quantidade da string
 
     resposta = f'{resposta}'
@@ -287,6 +290,8 @@ while True:
 
     tela.blit(texto_formatado, (30, 15))  # exibe a pergunta
     tela.blit(texto_formatado2, (30, 50))  # exibe a pergunta
+    tela.blit(texto_formatado3, (30, 85))  # exibe a pergunta
+
 
     print(pos_resp_correta)
     #tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
