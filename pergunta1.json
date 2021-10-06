@@ -1,10 +1,10 @@
 {
-  "pergunta1": "A definição de variáveis em PHP é feita * inserindo o caractere $ no início do nome da variável",
+  "pergunta1": "A definição de variáveis em PHP é feita * inserindo o caractere $ no início do nome da variável. *",
   "resposta_correta1_1": "verdadeiro",
   "resposta_errada1_1": "falso",
   "resposta_errada2_1": "falso",
   
-  "pergunta2": "As tuplas, embora sejam semelhantes às listas, * estão limitadas a, no máximo, cinco níveis.",
+  "pergunta2": "As tuplas, embora sejam semelhantes às listas, * estão limitadas a, no máximo, cinco níveis. *",
   "resposta_correta1_2": "falso",
   "resposta_errada1_2": "verdadeiro",
   "resposta_errada2_2": "falso",
