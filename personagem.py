@@ -184,6 +184,21 @@ class resposta_errada(pygame.sprite.Sprite):
     def update(self):
         print('atualizou a resposta errada')
 
+class resposta_errada2(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.sprites = []
+        self.sprites.append(pygame.image.load('imagens/resposta_correta.png'))
+        self.atual = 0
+        self.image = self.sprites[self.atual]
+        self.image = pygame.transform.scale(self.image, (150, 35))  # (32 * 7, 32 * 7)
+
+        self.rect = self.image.get_rect()
+        self.rect.topleft = 580, 242 #25, 242
+
+    def update(self):
+        print('atualizou a resposta errada 2')
+
 todas_as_sprites = pygame.sprite.Group()
 
 resposta_correta = resposta_correta()
@@ -193,6 +208,10 @@ grupo_resp_correta.add(resposta_correta)
 resposta_errada = resposta_errada() #não existia
 grupo_resp_errada = pygame.sprite.Group() #não existia
 grupo_resp_errada.add(resposta_errada) #não existia
+
+resposta_errada2 = resposta_errada2() #não existia
+grupo_resp_errada2 = pygame.sprite.Group() #não existia
+grupo_resp_errada2.add(resposta_errada2) #não existia
 
 personagem = personagem()
 todas_as_sprites.add(personagem)
@@ -310,6 +329,7 @@ while True:
 
     grupo_resp_correta.draw(tela)  # exibe na tela o retângulo da resposta
     grupo_resp_errada.draw(tela)
+    grupo_resp_errada2.draw(tela)
 
     tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
     tela.blit(resp_errada1_formatada, (pos_resp_errada, 245))  # exibe a resposta errada 1
