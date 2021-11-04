@@ -16,6 +16,7 @@ address_data = request.json()
 
 pontos = 0
 n_pergunta = 1
+total_perguntas = 3
 
 largura = 760
 altura = 480
@@ -37,9 +38,7 @@ class personagem(pygame.sprite.Sprite):
         self.sprites.append(pygame.image.load('imagens/sprite_0.png'))
         self.sprites.append(pygame.image.load('imagens/sprite_1.png'))
         self.sprites.append(pygame.image.load('imagens/sprite_2.png'))
-        ''' self.sprites.append(pygame.image.load('imagens/sprite_3.png'))
-        self.sprites.append(pygame.image.load('imagens/sprite_4.png'))
-        self.sprites.append(pygame.image.load('imagens/sprite_5.png'))'''
+                
         self.atual = 0
         self.image = self.sprites[self.atual]
         self.image = pygame.transform.scale(self.image, (10 * 7, 10 * 7))  # (32 * 7, 32 * 7)
@@ -209,9 +208,9 @@ resposta_errada = resposta_errada() #não existia
 grupo_resp_errada = pygame.sprite.Group() #não existia
 grupo_resp_errada.add(resposta_errada) #não existia
 
-resposta_errada2 = resposta_errada2() #não existia
-grupo_resp_errada2 = pygame.sprite.Group() #não existia
-grupo_resp_errada2.add(resposta_errada2) #não existia
+resposta_errada2 = resposta_errada2()
+grupo_resp_errada2 = pygame.sprite.Group()
+grupo_resp_errada2.add(resposta_errada2)
 
 personagem = personagem()
 todas_as_sprites.add(personagem)
@@ -254,35 +253,52 @@ while True:
 
     pygame.draw.rect(imagem_fundo, (255, 245, 245), (25, 10, 700, 210))
 
-    pergunta = address_data[f'pergunta{n_pergunta}']
-    resposta = address_data[f'resposta_correta1_{n_pergunta}']
-    resposta_errada1 = address_data[f'resposta_errada1_{n_pergunta}']
-    resposta_errada2 = address_data[f'resposta_errada2_{n_pergunta}']
+    if n_pergunta > total_perguntas:
+        texto = 'Game Over!!!'
+        #texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
+        texto_formatado = game_font.render(texto, True, (0, 0, 0))
 
-    game_font = pygame.font.SysFont('arial', 25, False, False)
+        #pergunta = address_data[f'pergunta{n_pergunta}']
 
-    pergunta = pergunta.split('*', 3)
+        game_font = pygame.font.SysFont('arial', 25, False, False)
 
-    #print(pergunta)
-    texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
-    texto_formatado = game_font.render(texto, True, (0, 0, 0))
+        texto2 = f''
+        texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
 
-    texto2 = f'{pergunta[1]}'
-    texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
-    # print(len(pergunta)) # exibe a quantidade da string
+        texto3 = f''
+        texto_formatado3 = game_font.render(texto3, True, (0, 0, 0))
 
-    texto3 = f'{pergunta[2]}'
-    texto_formatado3 = game_font.render(texto3, True, (0, 0, 0))
-    # print(len(pergunta)) # exibe a quantidade da string
 
-    resposta = f'{resposta}'
-    resposta_formatada = game_font.render(resposta, True, (0, 0, 0))
+    else:
+        pergunta = address_data[f'pergunta{n_pergunta}']
+        resposta = address_data[f'resposta_correta1_{n_pergunta}']
+        resposta_errada1 = address_data[f'resposta_errada1_{n_pergunta}']
+        resposta_errada2 = address_data[f'resposta_errada2_{n_pergunta}']
 
-    resposta_errada1 = f'{resposta_errada1}'
-    resp_errada1_formatada = game_font.render(resposta_errada1, True, (0, 0, 0))
+        game_font = pygame.font.SysFont('arial', 25, False, False)
 
-    resposta_errada2 = f'{resposta_errada2}'
-    resp_errada2_formatada = game_font.render(resposta_errada2, True, (0, 0, 0))
+        pergunta = pergunta.split('*', 3)
+
+        #print(pergunta)
+        texto = f'Pergunta {n_pergunta}: {pergunta[0]}'
+        texto_formatado = game_font.render(texto, True, (0, 0, 0))
+
+        texto2 = f'{pergunta[1]}'
+        texto_formatado2 = game_font.render(texto2, True, (0, 0, 0))
+        # print(len(pergunta)) # exibe a quantidade da string
+
+        texto3 = f'{pergunta[2]}'
+        texto_formatado3 = game_font.render(texto3, True, (0, 0, 0))
+        # print(len(pergunta)) # exibe a quantidade da string
+
+        resposta = f'{resposta}'
+        resposta_formatada = game_font.render(resposta, True, (0, 0, 0))
+
+        resposta_errada1 = f'{resposta_errada1}'
+        resp_errada1_formatada = game_font.render(resposta_errada1, True, (0, 0, 0))
+
+        resposta_errada2 = f'{resposta_errada2}'
+        resp_errada2_formatada = game_font.render(resposta_errada2, True, (0, 0, 0))
 
     #verifica se o personagem colidiu na resposta
     colisao = pygame.sprite.spritecollide(personagem, grupo_resp_correta, False)
@@ -310,7 +326,6 @@ while True:
     tela.blit(texto_formatado, (30, 15))  # exibe a pergunta
     tela.blit(texto_formatado2, (30, 50))  # exibe a pergunta
     tela.blit(texto_formatado3, (30, 85))  # exibe a pergunta
-
 
     print(pos_resp_correta)
     #tela.blit(resposta_formatada, (pos_resp_correta, 245))  # exibe a resposta
