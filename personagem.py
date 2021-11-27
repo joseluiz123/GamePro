@@ -41,7 +41,6 @@ class personagem(pygame.sprite.Sprite):
         self.sprites.append(pygame.image.load('imagens/sprite_0.png'))
         self.sprites.append(pygame.image.load('imagens/sprite_1.png'))
         self.sprites.append(pygame.image.load('imagens/sprite_2.png'))
-        self.sprites.append(pygame.image.load('imagens/sprite_2.png'))
 
         self.sprites.append(pygame.image.load('imagens/sprite_3.png'))
         self.sprites.append(pygame.image.load('imagens/sprite_4.png'))
